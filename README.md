@@ -17,3 +17,27 @@ L'obiettivo è sviluppare progressivamente un sistema in grado di:
 * integrare successivamente strumenti di AI per supportare l'interpretazione delle anomalie.
 
 Il progetto è in fase di sviluppo e verrà esteso progressivamente con nuove analisi e funzionalità di automazione.
+
+## Data Source
+
+I dati utilizzati nel progetto provengono dalla **European Central Bank (ECB)** attraverso la sua API ufficiale.
+
+La serie analizzata è il cambio **EUR/USD**, espresso come numero di dollari statunitensi per 1 euro.
+
+Ad esempio:
+
+```text
+2026-09-29 → 1.1355
+```
+
+significa che:
+
+```text
+1 EUR = 1.1355 USD
+```
+
+Il dataset contiene osservazioni giornaliere del tasso di cambio. I giorni per i quali non è disponibile un'osservazione vengono mantenuti nella serie e gestiti durante l'analisi.
+
+La fonte viene interrogata tramite Python e i dati vengono successivamente archiviati in un database **SQLite** per le analisi SQL.
+
+**Source:** European Central Bank – Data API
