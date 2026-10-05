@@ -36,6 +36,27 @@ significa che:
 1 EUR = 1.1355 USD
 ```
 
+## Python: Data Acquisition & Storage
+
+Python viene utilizzato per automatizzare le prime fasi del processo:
+
+1. inviare una richiesta all'API della European Central Bank;
+2. ricevere i dati relativi al cambio EUR/USD;
+3. salvare la risposta originale in formato XML;
+4. estrarre dalla risposta le date e i valori del cambio;
+5. creare e aggiornare un database SQLite;
+6. verificare il numero di osservazioni disponibili;
+7. recuperare le osservazioni più recenti per le successive analisi.
+
+La libreria `requests` viene utilizzata per effettuare la richiesta HTTP, mentre `xml.etree.ElementTree` permette di leggere e analizzare la struttura XML restituita dall'API.
+
+Il database SQLite contiene attualmente una tabella `exchange_rates` con due colonne:
+
+| Colonna | Tipo | Descrizione             |
+| ------- | ---- | ----------------------- |
+| `date`  | TEXT | Data dell'osservazione  |
+| `rate`  | REAL | Tasso di cambio EUR/USD |
+
 Il dataset contiene osservazioni giornaliere del tasso di cambio. I giorni per i quali non è disponibile un'osservazione vengono mantenuti nella serie e gestiti durante l'analisi.
 
 La fonte viene interrogata tramite Python e i dati vengono successivamente archiviati in un database **SQLite** per le analisi SQL.
