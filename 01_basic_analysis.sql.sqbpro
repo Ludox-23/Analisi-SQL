@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/ludov/OneDrive/Desktop/automated-data-monitoring/Python/ecb_data.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="333"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="exchange_rates" custom_title="0" dock_id="1" table="4,14:mainexchange_rates"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011b00ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">--valore min e max della valuta in assoluto 
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/ludov/OneDrive/Desktop/automated-data-monitoring/Python/ecb_data.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="333"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="exchange_rates" custom_title="0" dock_id="1" table="4,14:mainexchange_rates"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011b00ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">--valore min e max della valuta in assoluto 
 
-SELECT min(rate), max (rate)
+SELECT min(rate), max (rate), avg(rate), count(date)
 FROM exchange_rates
 
 
 ;
-</sql><sql name="SQL 2*">--classificazione dei valori di variazione con soglia di alert
+</sql><sql name="SQL 2">--classificazione dei valori di variazione con soglia di alert
 SELECT date, rate, rate - LAG(rate) OVER (ORDER BY date) as var_giornaliera,
 ((rate - LAG(rate) OVER (ORDER BY date))
  / LAG(rate) OVER (ORDER BY date)) * 100 AS Var_perc,
@@ -21,7 +21,8 @@ END AS alert_status
  FROM exchange_rates
 order by date desc
 
-;</sql><sql name="SQL 3*">--clista dei 10 giorni con la variazione maggiore 
+
+;</sql><sql name="SQL 3">--lista dei 10 giorni con la variazione maggiore 
 SELECT date, rate, rate - LAG(rate) OVER (ORDER BY date) as var_giornaliera,
 ((rate - LAG(rate) OVER (ORDER BY date))
  / LAG(rate) OVER (ORDER BY date)) * 100 AS Var_perc,
@@ -36,8 +37,11 @@ END AS alert_status
 
 FROM exchange_rates
 order by abs(Var_perc) DESC
-limit 10;
-</sql><sql name="SQL 4*">--conteggio alert per categoria con utilizzo subquery
+limit 10
+
+
+;
+</sql><sql name="SQL 4">--conteggio alert per categoria con utilizzo subquery
 select alert_status, count(*)
 
 from(SELECT date, rate, rate - LAG(rate) OVER (ORDER BY date) as var_giornaliera,
@@ -53,7 +57,10 @@ END AS alert_status
 
 FROM exchange_rates)
 group by alert_status;
-</sql><sql name="SQL 5*">--vedo i valori con variazione giornaliera null 
+
+
+
+</sql><sql name="SQL 5">--vedo i valori con variazione giornaliera null 
 -- sono presenti date senza rate qindi problema di data quality, da vedere però se sono date particolari/ festivi
 select date, rate, var_giornaliera, Var_perc
 from(
@@ -74,7 +81,10 @@ END AS alert_status
 
 order by date desc)
 
- where var_giornaliera is null</sql><sql name="SQL 6*">--numero di righe null 
+ where var_giornaliera is null
+ 
+ 
+ ;</sql><sql name="SQL 6">--numero di righe null 
 select count(*)
 from(
 
@@ -94,4 +104,7 @@ END AS alert_status
 
 order by date desc)
 
- where var_giornaliera is null</sql><current_tab id="5"/></tab_sql></sqlb_project>
+ where var_giornaliera is null
+ 
+ 
+ ;</sql><current_tab id="5"/></tab_sql></sqlb_project>
