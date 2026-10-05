@@ -108,3 +108,17 @@ Il dataset contiene osservazioni giornaliere del tasso di cambio. I giorni per i
 La fonte viene interrogata tramite Python e i dati vengono successivamente archiviati in un database **SQLite** per le analisi SQL.
 
 **Source:** European Central Bank – Data API
+
+
+## Analisi della qualità dei dati
+
+Il file `02_data_quality.sql` contiene le query dedicate al controllo della qualità dei dati presenti nel dataset dei tassi di cambio ECB.
+
+L'analisi verifica la presenza di valori mancanti (`NULL`) nel campo `rate` e ne studia la distribuzione nel tempo, prima individuando le date interessate e successivamente aggregando i valori mancanti per mese.
+
+L'analisi evidenzia che i valori `NULL` sono concentrati nella parte storica del dataset e non risultano più presenti dopo il 2012. Questa verifica permette di individuare caratteristiche e possibili anomalie nella struttura dei dati prima di procedere con le analisi delle variazioni giornaliere.
+
+### Distribuzione dei valori NULL
+Il grafico mostra il numero di valori `NULL` presenti nel campo `rate`, aggregati per mese, e permette di visualizzarne la distribuzione nel periodo considerato.
+
+
