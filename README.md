@@ -25,16 +25,11 @@ I dati utilizzati nel progetto provengono dalla **European Central Bank (ECB)** 
 La serie analizzata è il cambio **EUR/USD**, espresso come numero di dollari statunitensi per 1 euro.
 
 Ad esempio:
-
-```text
 2026-09-29 → 1.1355
-```
 
 significa che:
-
-```text
 1 EUR = 1.1355 USD
-```
+
 
 ## Python: Data Acquisition & Storage
 
@@ -56,6 +51,57 @@ Il database SQLite contiene attualmente una tabella `exchange_rates` con due col
 | ------- | ---- | ----------------------- |
 | `date`  | TEXT | Data dell'osservazione  |
 | `rate`  | REAL | Tasso di cambio EUR/USD |
+
+
+## SQL Analysis
+
+I dati archiviati nel database SQLite vengono analizzati attraverso query SQL per individuare variazioni nel tasso di cambio e ottenere indicatori utili al monitoraggio.
+
+Le analisi sviluppate finora includono:
+
+### 1. Analisi descrittiva
+
+Calcolo di statistiche di base sulla serie storica, tra cui:
+
+* media del tasso di cambio;
+* valori min e max del tasso di cambio;
+* conteggio delle righe presenti nel database.
+
+### 2. Variazione giornaliera
+
+Utilizzo della funzione `LAG()` per confrontare ogni osservazione con quella precedente e calcolare la variazione giornaliera del tasso di cambio.
+
+
+Variazione giornaliera = valore corrente − valore precedente
+
+
+### 3. Variazione percentuale
+
+La variazione assoluta viene trasformata in una variazione percentuale rispetto all'osservazione precedente:
+
+
+Variazione % = (valore corrente − valore precedente) / valore precedente × 100
+
+
+### 4. Classificazione delle variazioni
+
+Le variazioni percentuali vengono classificate utilizzando `CASE WHEN` e `ABS()`:
+
+* **ALERT** → variazione assoluta ≥ 0,50%
+* **ATTENTION** → variazione assoluta ≥ 0,30% e < 0,50%
+* **OK** → variazione assoluta < 0,30%
+
+Le soglie sono definite come criteri di monitoraggio del progetto e non rappresentano una classificazione ufficiale della European Central Bank.
+
+### 5. Analisi delle anomalie
+
+Le query vengono utilizzate per:
+
+* individuare le variazioni più significative;
+* contare quante osservazioni rientrano nelle diverse categorie;
+* analizzare i valori mancanti (`NULL`);
+* preparare la serie di dati per successive tecniche di anomaly detection.
+
 
 Il dataset contiene osservazioni giornaliere del tasso di cambio. I giorni per i quali non è disponibile un'osservazione vengono mantenuti nella serie e gestiti durante l'analisi.
 
