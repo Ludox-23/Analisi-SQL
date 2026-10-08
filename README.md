@@ -114,7 +114,7 @@ La fonte viene interrogata tramite Python e i dati vengono successivamente archi
 
 Il file `02_data_quality.sql` contiene le query dedicate al controllo della qualità dei dati presenti nel dataset dei tassi di cambio ECB.
 
-L'analisi verifica la presenza di valori mancanti (`NULL`) nel campo `rate` e ne studia la distribuzione nel tempo, prima individuando le date interessate e successivamente aggregando i valori mancanti per mese.
+L'analisi verifica la presenza di valori mancanti (`NULL`) nel campo `rate` e ne studia la distribuzione nel tempo, prima individuando le date interessate e successivamente aggregando i valori mancanti, ne studia la distribuzione per mese e anno e calcola, per ciascun anno, la percentuale di valori NULL sul totale delle osservazioni. Vengono inoltre identificati gli anni con la maggiore presenza di valori mancanti e quelli che superano determinate soglie di frequenza.
 
 L'analisi evidenzia che i valori `NULL` sono concentrati nella parte storica del dataset e non risultano più presenti dopo il 2012. Questa verifica permette di individuare caratteristiche e possibili anomalie nella struttura dei dati prima di procedere con le analisi delle variazioni giornaliere.
 
