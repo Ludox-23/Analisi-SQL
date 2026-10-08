@@ -121,4 +121,17 @@ L'analisi evidenzia che i valori `NULL` sono concentrati nella parte storica del
 ### Distribuzione dei valori NULL
 Il grafico mostra il numero di valori `NULL` presenti nel campo `rate`, aggregati per mese, e permette di visualizzarne la distribuzione nel periodo considerato.
 
+## AUTOMAZIONE AGGIORNAMENTO DATABASE 
+
+### `ecb_automated_vers_data.py`
+
+Il file `ecb_automated_vers_data.py` contiene una versione automatizzata dello script di acquisizione dei dati ECB.
+
+Lo script scarica periodicamente i dati relativi al tasso di cambio EUR/USD tramite l'API della European Central Bank, salva la risposta in formato XML e aggiorna il database SQLite del progetto.
+
+A differenza dello script originale, i dati già presenti nel database non vengono sovrascritti. Lo script confronta le date delle osservazioni scaricate con quelle già registrate e inserisce solamente le nuove osservazioni disponibili.
+
+È inoltre presente un sistema di **logging** che registra automaticamente ogni esecuzione nel file `logs/update_log.txt`. Per ogni aggiornamento vengono salvati **data e ora dell'esecuzione, numero di osservazioni scaricate e numero di nuove osservazioni inserite**. Il file di log viene aggiornato in modalità append, mantenendo lo storico delle esecuzioni precedenti.
+
+L'esecuzione automatica viene gestita tramite **Windows Task Scheduler**, permettendo di aggiornare periodicamente il database e monitorare l'esito delle esecuzioni attraverso il file di log senza dover avviare manualmente lo script.
 
