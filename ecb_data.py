@@ -1,5 +1,3 @@
-#Codice con righe di controllo 
-
 print("ECB Data Monitoring Project")
 
 import requests
